@@ -1,1 +1,772 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzería Napoletana | El verdadero sabor italiano</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Tailwind Configuration for Custom Colors & Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cafe: {
+                            oscuro: '#2C1A1D',    /* Café muy oscuro / Expreso */
+                            medio: '#4A2C2A',     /* Café tostado */
+                            claro: '#D4A373',     /* Café con leche / Caramelo */
+                            suave: '#E6CCB2',     /* Crema de café */
+                            fondo: '#FDFBF7',     /* Blanco hueso / Espuma */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FDFBF7;
+            color: #2C1A1D;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E6CCB2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4A2C2A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2C1A1D;
+        }
+    </style>
+</head>
+<body class="bg-cafe-fondo text-cafe-oscuro flex flex-col min-h-screen">
+
+    <!-- ================= HEADER & NAVIGATION ================= -->
+    <header class="sticky top-0 z-50 bg-cafe-oscuro text-white shadow-xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#inicio" onclick="showPage('inicio')" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-full bg-cafe-claro flex items-center justify-center text-cafe-oscuro text-2xl group-hover:scale-105 transition-transform duration-300">
+                        <i class="fa-solid fa-pizza-slice"></i>
+                    </div>
+                    <div>
+                        <span class="font-playfair text-2xl font-bold tracking-wider text-cafe-suave block leading-none">PIZZERÍA NAPOLI</span>
+                        <span class="text-xs text-cafe-claro font-light tracking-widest uppercase">Masa Madre & Horno a Leña</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 text-base font-medium">
+                    <button onclick="showPage('inicio')" id="nav-inicio" class="nav-link text-cafe-claro hover:text-cafe-suave transition-colors py-2 border-b-2 border-cafe-claro">
+                        Inicio
+                    </button>
+                    <button onclick="showPage('productos')" id="nav-productos" class="nav-link text-white hover:text-cafe-claro transition-colors py-2 border-b-2 border-transparent">
+                        Productos
+                    </button>
+                    <button onclick="showPage('contacto')" id="nav-contacto" class="nav-link text-white hover:text-cafe-claro transition-colors py-2 border-b-2 border-transparent">
+                        Contactar
+                    </button>
+                </nav>
+
+                <!-- Actions: Cart Button & Mobile Menu Toggle -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleCartModal()" class="relative p-2 bg-cafe-medio hover:bg-cafe-claro hover:text-cafe-oscuro text-white rounded-full transition-all duration-300">
+                        <i class="fa-solid fa-shopping-bag text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-cafe-suave hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-cafe-medio border-t border-cafe-oscuro">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <button onclick="showPage('inicio'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-cafe-oscuro">
+                    <i class="fa-solid fa-house mr-2 text-cafe-claro"></i> Inicio
+                </button>
+                <button onclick="showPage('productos'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-cafe-oscuro">
+                    <i class="fa-solid fa-pizza-slice mr-2 text-cafe-claro"></i> Productos
+                </button>
+                <button onclick="showPage('contacto'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-cafe-oscuro">
+                    <i class="fa-solid fa-envelope mr-2 text-cafe-claro"></i> Contactar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: INICIO ================= -->
+        <section id="page-inicio" class="page-content block">
+            <!-- Hero Section con Fondo de Pizza -->
+            <div class="relative bg-cafe-oscuro text-white overflow-hidden py-24 lg:py-32">
+                <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1600&q=80');"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-cafe-oscuro via-cafe-oscuro/80 to-transparent"></div>
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2 text-center lg:text-left space-y-6">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-cafe-claro/20 text-cafe-claro text-sm font-semibold tracking-wide border border-cafe-claro/30 uppercase">
+                            Pizzas 100% Artesanales
+                        </span>
+                        <h1 class="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                            El auténtico sabor de la Pizza Napolitana
+                        </h1>
+                        <p class="text-cafe-suave text-lg max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            Masa madre con 48 horas de fermentación, ingredientes frescos importados y horneada a la piedra. Una explosión de sabor en cada bocado.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                            <button onclick="showPage('productos')" class="px-8 py-4 bg-cafe-claro hover:bg-white text-cafe-oscuro font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                Ver Carta de Pizzas
+                            </button>
+                            <button onclick="showPage('contacto')" class="px-8 py-4 border-2 border-cafe-claro text-cafe-claro hover:bg-cafe-claro hover:text-cafe-oscuro font-semibold rounded-xl transition-all duration-300">
+                                Reserva tu Mesa
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center">
+                        <div class="relative w-80 h-80 sm:w-96 sm:h-96 rounded-full border-4 border-cafe-claro/30 p-4 shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80" alt="Pizza Napolitana Recién Horneada" class="w-full h-full object-cover rounded-full shadow-inner">
+                            <div class="absolute -bottom-4 -left-4 bg-white text-cafe-oscuro p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-cafe-suave">
+                                <i class="fa-solid fa-fire text-3xl text-orange-600"></i>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-500 uppercase">Horno a Leña</p>
+                                    <p class="font-playfair font-bold text-sm">Premio Mejor Pizza 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features / Por qué elegirnos -->
+            <div class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-16">
+                        <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-cafe-oscuro mb-4">La Experiencia Pizzería Napoli</h2>
+                        <div class="w-24 h-1 bg-cafe-claro mx-auto mb-4"></div>
+                        <p class="text-gray-600">Nos apasiona brindarte la calidad tradicional italiana en cada ingrediente y preparación.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-cafe-fondo p-8 rounded-2xl border border-cafe-suave text-center hover:shadow-lg transition-shadow">
+                            <div class="w-16 h-16 bg-cafe-oscuro text-cafe-claro rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                                <i class="fa-solid fa-wheat-awn"></i>
+                            </div>
+                            <h3 class="font-playfair text-xl font-bold text-cafe-oscuro mb-3">Masa Madre Natural</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Fermentada lentamente para lograr una textura crujiente por fuera y suave por dentro.</p>
+                        </div>
+
+                        <div class="bg-cafe-fondo p-8 rounded-2xl border border-cafe-suave text-center hover:shadow-lg transition-shadow">
+                            <div class="w-16 h-16 bg-cafe-oscuro text-cafe-claro rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                                <i class="fa-solid fa-fire text-2xl"></i>
+                            </div>
+                            <h3 class="font-playfair text-xl font-bold text-cafe-oscuro mb-3">Horno de Piedra</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Horneadas a más de 400°C con madera de roble para ese auténtico toque ahumado.</p>
+                        </div>
+
+                        <div class="bg-cafe-fondo p-8 rounded-2xl border border-cafe-suave text-center hover:shadow-lg transition-shadow">
+                            <div class="w-16 h-16 bg-cafe-oscuro text-cafe-claro rounded-full flex items-center justify-center text-2xl mx-auto mb-6">
+                                <i class="fa-solid fa-cheese"></i>
+                            </div>
+                            <h3 class="font-playfair text-xl font-bold text-cafe-oscuro mb-3">Ingredientes Frescos</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Queso Mozzarella fior di latte, tomates San Marzano y albahaca fresca del día.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Destacados / Recomendaciones -->
+            <div class="py-20 bg-cafe-fondo border-t border-cafe-suave">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <span class="text-cafe-claro font-semibold uppercase tracking-widest text-sm">Nuestras Especialidades</span>
+                            <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-cafe-oscuro mt-1">Pizzas Recomendadas</h2>
+                        </div>
+                        <button onclick="showPage('productos')" class="mt-4 md:mt-0 text-cafe-medio hover:text-cafe-oscuro font-bold flex items-center gap-2 transition-colors">
+                            Ver carta completa <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="featured-products">
+                        <!-- Generado dinámicamente con JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: PRODUCTOS ================= -->
+        <section id="page-productos" class="page-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Title Header -->
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h1 class="font-playfair text-4xl sm:text-5xl font-bold text-cafe-oscuro mb-4">Nuestra Carta de Pizzas & Menú</h1>
+                    <p class="text-gray-600">Disfruta de nuestras pizzas tradicionales, especialidades de la casa, entradas y bebidas acompañantes.</p>
+                    <div class="w-24 h-1 bg-cafe-claro mx-auto mt-4"></div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button onclick="filterProducts('todos')" class="cat-btn bg-cafe-oscuro text-white px-6 py-2.5 rounded-full font-medium shadow-md transition-all">
+                        Todas
+                    </button>
+                    <button onclick="filterProducts('clasicas')" class="cat-btn bg-white text-cafe-oscuro hover:bg-cafe-suave border border-cafe-suave px-6 py-2.5 rounded-full font-medium transition-all">
+                        Pizzas Clásicas
+                    </button>
+                    <button onclick="filterProducts('especiales')" class="cat-btn bg-white text-cafe-oscuro hover:bg-cafe-suave border border-cafe-suave px-6 py-2.5 rounded-full font-medium transition-all">
+                        Especiales de la Casa
+                    </button>
+                    <button onclick="filterProducts('entradas')" class="cat-btn bg-white text-cafe-oscuro hover:bg-cafe-suave border border-cafe-suave px-6 py-2.5 rounded-full font-medium transition-all">
+                        Entradas & Antipastos
+                    </button>
+                    <button onclick="filterProducts('bebidas')" class="cat-btn bg-white text-cafe-oscuro hover:bg-cafe-suave border border-cafe-suave px-6 py-2.5 rounded-full font-medium transition-all">
+                        Bebidas & Cafés
+                    </button>
+                </div>
+
+                <!-- Grid of Products -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="products-grid">
+                    <!-- Productos inyectados por JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: CONTACTAR ================= -->
+        <section id="page-contacto" class="page-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h1 class="font-playfair text-4xl sm:text-5xl font-bold text-cafe-oscuro mb-4">Contáctanos & Reservas</h1>
+                    <p class="text-gray-600">¿Deseas reservar una mesa para un evento especial o hacernos una consulta? Escríbenos directamente.</p>
+                    <div class="w-24 h-1 bg-cafe-claro mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Formulario de Contacto -->
+                    <div class="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl shadow-lg border border-cafe-suave">
+                        <h2 class="font-playfair text-2xl font-bold text-cafe-oscuro mb-6 flex items-center gap-3">
+                            <i class="fa-regular fa-paper-plane text-cafe-claro"></i> Reserva o Envíanos un mensaje
+                        </h2>
+                        
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="nombre" class="block text-sm font-semibold text-cafe-oscuro mb-2">Nombre Completo *</label>
+                                    <input type="text" id="nombre" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-cafe-claro focus:ring-2 focus:ring-cafe-claro/20 transition-all" placeholder="Tu nombre">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-semibold text-cafe-oscuro mb-2">Correo Electrónico *</label>
+                                    <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-cafe-claro focus:ring-2 focus:ring-cafe-claro/20 transition-all" placeholder="ejemplo@correo.com">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="telefono" class="block text-sm font-semibold text-cafe-oscuro mb-2">Teléfono</label>
+                                    <input type="tel" id="telefono" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-cafe-claro focus:ring-2 focus:ring-cafe-claro/20 transition-all" placeholder="+51 987 654 321">
+                                </div>
+                                <div>
+                                    <label for="asunto" class="block text-sm font-semibold text-cafe-oscuro mb-2">Asunto *</label>
+                                    <select id="asunto" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-cafe-claro focus:ring-2 focus:ring-cafe-claro/20 transition-all bg-white">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="reserva">Reserva de mesa</option>
+                                        <option value="eventos">Eventos y Cumpleaños</option>
+                                        <option value="comentarios">Comentarios o sugerencias</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="mensaje" class="block text-sm font-semibold text-cafe-oscuro mb-2">Mensaje *</label>
+                                <textarea id="mensaje" rows="4" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-cafe-claro focus:ring-2 focus:ring-cafe-claro/20 transition-all" placeholder="¿En qué podemos ayudarte?"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-cafe-oscuro text-white font-bold rounded-xl hover:bg-cafe-medio transition-all duration-300 shadow-md">
+                                Enviar Mensaje
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Información de Contacto y Horarios -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-8">
+                        <div class="bg-cafe-oscuro text-white p-8 rounded-3xl shadow-lg relative overflow-hidden">
+                            <h3 class="font-playfair text-2xl font-bold text-cafe-suave mb-6">Información de Contacto</h3>
+                            
+                            <ul class="space-y-6 text-sm">
+                                <li class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center text-cafe-claro shrink-0">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="block text-cafe-claro text-base">Dirección</strong>
+                                        <span>Av. de los Sabores 123, Vía Italia</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center text-cafe-claro shrink-0">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="block text-cafe-claro text-base">Teléfonos</strong>
+                                        <span>+51 (01) 345-6789 / +51 987 654 321</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center text-cafe-claro shrink-0">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="block text-cafe-claro text-base">Correo Electrónico</strong>
+                                        <span>contacto@pizzerianapoli.com</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center text-cafe-claro shrink-0">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="block text-cafe-claro text-base">Horario de Atención</strong>
+                                        <p>Martes a Domingo: 12:00 PM - 11:00 PM</p>
+                                        <p>Lunes: Cerrado por descanso</p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="mt-8 pt-6 border-t border-cafe-medio">
+                                <span class="block text-xs uppercase text-cafe-claro mb-3 font-semibold tracking-wider">Síguenos en Redes</span>
+                                <div class="flex gap-4">
+                                    <a href="#" class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center hover:bg-cafe-claro hover:text-cafe-oscuro transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center hover:bg-cafe-claro hover:text-cafe-oscuro transition-all"><i class="fa-brands fa-instagram"></i></a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-cafe-medio flex items-center justify-center hover:bg-cafe-claro hover:text-cafe-oscuro transition-all"><i class="fa-brands fa-tiktok"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mapa decorativo de ubicación -->
+                        <div class="bg-white p-4 rounded-3xl border border-cafe-suave shadow-md h-64 overflow-hidden relative">
+                            <iframe title="Ubicación Pizzería" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.96627581132!2d-77.0315!3d-12.046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDAyJzE1LjYiUyA3N8KwMDEnNTMuNCJX!5e0!3m2!1ses!2spe!4v1620000000000!5m2!1ses!2spe" class="w-full h-full rounded-2xl border-0" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODAL: CARRITO DE COMPRAS ================= -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 flex justify-end opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300" id="cart-panel">
+            <div class="p-6 bg-cafe-oscuro text-white flex justify-between items-center">
+                <h3 class="font-playfair text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-cafe-claro"></i> Tu Pedido
+                </h3>
+                <button onclick="toggleCartModal()" class="text-cafe-suave hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Items List -->
+            <div id="cart-items" class="flex-grow p-6 overflow-y-auto space-y-4">
+                <!-- Inyectado por JS -->
+            </div>
+
+            <!-- Cart Footer -->
+            <div class="p-6 bg-cafe-fondo border-t border-cafe-suave space-y-4">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span>Total:</span>
+                    <span id="cart-total" class="text-cafe-oscuro">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full py-3.5 bg-cafe-claro hover:bg-cafe-oscuro text-cafe-oscuro hover:text-white font-bold rounded-xl transition-all duration-300 shadow">
+                    Confirmar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= NOTIFICACIÓN TOAST ================= -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-cafe-oscuro text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 border border-cafe-claro">
+        <i class="fa-solid fa-circle-check text-cafe-claro text-xl"></i>
+        <span id="toast-message">Producto añadido al carrito</span>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-cafe-oscuro text-cafe-suave border-t border-cafe-medio">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-pizza-slice text-cafe-claro text-2xl"></i>
+                        <span class="font-playfair text-xl font-bold text-white tracking-wider">PIZZERÍA NAPOLI</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Pasión por la autenticidad italiana. Cada pizza está elaborada con amor, masa fermentada y los mejores ingredientes.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-playfair text-white font-bold mb-4">Navegación</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#inicio" onclick="showPage('inicio')" class="hover:text-cafe-claro transition-colors">Inicio</a></li>
+                        <li><a href="#productos" onclick="showPage('productos')" class="hover:text-cafe-claro transition-colors">Productos</a></li>
+                        <li><a href="#contacto" onclick="showPage('contacto')" class="hover:text-cafe-claro transition-colors">Contactar</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-playfair text-white font-bold mb-4">Especialidades</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>Pizza Margherita Doc</li>
+                        <li>Pepperoni Supremo</li>
+                        <li>Cuatro Quesos Italiana</li>
+                        <li>Calzone Tradicional</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-playfair text-white font-bold mb-4">Boletín informativo</h4>
+                    <p class="text-xs text-gray-400 mb-3">Suscríbete para recibir ofertas y promociones exclusivas.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Tu email" class="px-3 py-2 bg-cafe-medio text-white text-sm rounded-l-lg focus:outline-none w-full">
+                        <button onclick="subscribeNewsletter()" class="bg-cafe-claro text-cafe-oscuro px-4 rounded-r-lg font-bold hover:bg-white transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-6 border-t border-cafe-medio/50 text-center text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>&copy; 2026 Pizzería Napoli. Todos los derechos reservados.</p>
+                <p>El auténtico sabor de Italia a tu mesa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- BASE DE DATOS DE PRODUCTOS ---
+        const products = [
+            {
+                id: 1,
+                nombre: 'Pizza Margherita DOC',
+                categoria: 'clasicas',
+                precio: 12.50,
+                descripcion: 'Salsa de tomate San Marzano, mozzarella Fior di Latte, albahaca fresca y aceite de oliva virgen extra.',
+                imagen: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=600&q=80',
+                destacado: true
+            },
+            {
+                id: 2,
+                nombre: 'Pepperoni Supremo',
+                categoria: 'clasicas',
+                precio: 14.00,
+                descripcion: 'Masa crujiente, queso mozzarella fundido, pepperoni artesanal ligeramente picante y orégano.',
+                imagen: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80',
+                destacado: true
+            },
+            {
+                id: 3,
+                nombre: 'Pizza Cuatro Quesos',
+                categoria: 'especiales',
+                precio: 15.50,
+                descripcion: 'Mezcla perfecta de Mozzarella, Gorgonzola, Parmesano y Fontina sobre base blanca o roja.',
+                imagen: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
+                destacado: true
+            },
+            {
+                id: 4,
+                nombre: 'Prosciutto e Funghi',
+                categoria: 'clasicas',
+                precio: 14.50,
+                descripcion: 'Jamón prosciutto cotto, champiñones frescos laminados, mozzarella y salsa de tomate.',
+                imagen: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80',
+                destacado: false
+            },
+            {
+                id: 5,
+                nombre: 'Pizza Diávola',
+                categoria: 'especiales',
+                precio: 15.00,
+                descripcion: 'Salami picante italiano, chile fresco, pimientos asados y mozzarella rallada.',
+                imagen: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=600&q=80',
+                destacado: false
+            },
+            {
+                id: 6,
+                nombre: 'Bruschetta Italiana',
+                categoria: 'entradas',
+                precio: 6.80,
+                descripcion: 'Pan de la casa tostado con ajo, tomate concassé, albahaca y un chorrito de aceite de oliva.',
+                imagen: 'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?auto=format&fit=crop&w=600&q=80',
+                destacado: true
+            },
+            {
+                id: 7,
+                nombre: 'Focaccia con Romero',
+                categoria: 'entradas',
+                precio: 5.90,
+                descripcion: 'Masa fina y aromática al horno de leña horneada con sal marina, romero y oliva.',
+                imagen: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80',
+                destacado: false
+            },
+            {
+                id: 8,
+                nombre: 'Café Espresso & Tiramisú',
+                categoria: 'bebidas',
+                precio: 6.50,
+                descripcion: 'Un trago de espresso caliente acompañado de nuestra deliciosa porción de tiramisú artesanal.',
+                imagen: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=600&q=80',
+                destacado: false
+            }
+        ];
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let cart = [];
+
+        // --- INICIALIZACIÓN ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFeaturedProducts();
+            renderProducts(products);
+
+            // Event listener para menú móvil
+            document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+        });
+
+        // --- SISTEMA DE NAVEGACIÓN SPA ---
+        function showPage(pageId) {
+            // Ocultar todas las páginas
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.add('hidden'));
+
+            // Mostrar la página seleccionada
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
+            // Actualizar estado activo en los enlaces del Nav
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('text-cafe-claro', 'border-cafe-claro');
+                link.classList.add('text-white', 'border-transparent');
+            });
+
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-white', 'border-transparent');
+                activeNav.classList.add('text-cafe-claro', 'border-cafe-claro');
+            }
+
+            // Scroll arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- RENDERIZADO DE PRODUCTOS ---
+        function createProductCard(product) {
+            return `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-cafe-suave hover:shadow-xl transition-all duration-300 flex flex-col group">
+                    <div class="relative h-48 overflow-hidden bg-cafe-suave/30">
+                        <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-cafe-oscuro text-cafe-claro text-xs font-bold px-3 py-1 rounded-full shadow">
+                            $${product.precio.toFixed(2)}
+                        </span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="font-playfair text-xl font-bold text-cafe-oscuro mb-2">${product.nombre}</h3>
+                        <p class="text-gray-600 text-xs mb-4 flex-grow leading-relaxed">${product.descripcion}</p>
+                        <button onclick="addToCart(${product.id})" class="w-full py-2.5 bg-cafe-claro hover:bg-cafe-oscuro text-cafe-oscuro hover:text-white font-semibold rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 text-sm shadow-sm">
+                            <i class="fa-solid fa-cart-plus"></i> Añadir al Carrito
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFeaturedProducts() {
+            const featuredContainer = document.getElementById('featured-products');
+            const featuredList = products.filter(p => p.destacado).slice(0, 3);
+            featuredContainer.innerHTML = featuredList.map(p => createProductCard(p)).join('');
+        }
+
+        function renderProducts(productList) {
+            const gridContainer = document.getElementById('products-grid');
+            if (productList.length === 0) {
+                gridContainer.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No se encontraron productos en esta categoría.</p>`;
+                return;
+            }
+            gridContainer.innerHTML = productList.map(p => createProductCard(p)).join('');
+        }
+
+        function filterProducts(category) {
+            // Actualizar diseño de botones
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-cafe-oscuro', 'text-white');
+                btn.classList.add('bg-white', 'text-cafe-oscuro');
+            });
+
+            event.target.classList.remove('bg-white', 'text-cafe-oscuro');
+            event.target.classList.add('bg-cafe-oscuro', 'text-white');
+
+            // Filtrar elementos
+            if (category === 'todos') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.categoria === category);
+                renderProducts(filtered);
+            }
+        }
+
+        // --- CARRITO DE COMPRAS ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.cantidad += 1;
+            } else {
+                cart.push({ ...product, cantidad: 1 });
+            }
+
+            updateCartUI();
+            showToast(`"${product.nombre}" añadido al carrito.`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.cantidad += delta;
+                if (item.cantidad <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            // Contadores
+            const totalCount = cart.reduce((sum, item) => sum + item.cantidad, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+
+            // Elementos en el Modal
+            const itemsContainer = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-5xl mb-3"></i>
+                        <p>Tu carrito está vacío.</p>
+                    </div>
+                `;
+            } else {
+                itemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-4 bg-cafe-fondo p-3 rounded-xl border border-cafe-suave">
+                        <img src="${item.imagen}" alt="${item.nombre}" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm text-cafe-oscuro">${item.nombre}</h4>
+                            <p class="text-xs text-cafe-claro font-semibold">$${item.precio.toFixed(2)} c/u</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded bg-cafe-suave text-cafe-oscuro flex items-center justify-center text-xs font-bold hover:bg-cafe-claro">-</button>
+                                <span class="text-xs font-bold px-2">${item.cantidad}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded bg-cafe-suave text-cafe-oscuro flex items-center justify-center text-xs font-bold hover:bg-cafe-claro">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-sm p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Total
+            const totalAmount = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            document.getElementById('cart-total').innerText = `$${totalAmount.toFixed(2)}`;
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            const panel = document.getElementById('cart-panel');
+
+            if (modal.classList.contains('opacity-0')) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                panel.classList.remove('translate-x-full');
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.add('translate-x-full');
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast("Añade productos antes de procesar la compra.");
+                return;
+            }
+            showToast("¡Gracias por tu pedido! Lo prepararemos pronto.");
+            cart = [];
+            updateCartUI();
+            toggleCartModal();
+        }
+
+        // --- INTERACCIONES Y FORMULARIOS ---
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            showToast(`¡Gracias ${nombre}! Hemos recibido tu mensaje.`);
+            document.getElementById('contact-form').reset();
+        }
+
+        function subscribeNewsletter() {
+            showToast("¡Suscripción exitosa al boletín!");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
